@@ -17,6 +17,12 @@ public class TextChat : MonoBehaviourPunCallbacks
     // Range minimo e massimo per la grandezza del font
     public int minFontSize = 4;
     public int maxFontSize = 20;
+    
+    //Campo InputField da modificare
+    private GameObject myInputField;
+
+    // Fattore di scala per adattare l'altezza della casella di input
+    public float scaleFactor = 1.2f; 
 
     // Dizionario che converte parole in numeri
     private Dictionary<string, int> numberWords = new Dictionary<string, int>()
@@ -111,6 +117,10 @@ public class TextChat : MonoBehaviourPunCallbacks
         // Estrai il numero dal testo inserito
         int fontSize = ExtractNumberFromText(transcription);
 
+        //myInputField = GameObject.Find("CommandInfo");
+        // Ottieni il RectTransform della casella di input
+        RectTransform inputRectTransform = inputField.GetComponent<RectTransform>();
+
         // Controlla se c'è una frase come "a venti" per impostare direttamente il font
         Match matchDirectSet = Regex.Match(text, @"\ba\s*(\b\w+\b)");
         if(!matchDirectSet.Success){
@@ -126,12 +136,22 @@ public class TextChat : MonoBehaviourPunCallbacks
                 if (shouldIncrease)
                 {
                     myText.fontSize = Mathf.Clamp(myText.fontSize + changeValue, minFontSize, maxFontSize);
+                    // Calcola la nuova altezza in base alla dimensione del font e al fattore di scala
+                    float newHeight = (myText.fontSize + changeValue) * scaleFactor;
+
+                    // Applica la nuova altezza alla casella di input
+                    inputRectTransform.sizeDelta = new Vector2(inputRectTransform.sizeDelta.x, newHeight);
                 }
 
                 // Se il comando è per ridurre, diminuisci la dimensione del font
                 if (shouldDecrease)
                 {
                     myText.fontSize = Mathf.Clamp(myText.fontSize - changeValue, minFontSize, maxFontSize);
+                    // Calcola la nuova altezza in base alla dimensione del font e al fattore di scala
+                    float newHeight = (myText.fontSize - changeValue) * scaleFactor;
+
+                    // Applica la nuova altezza alla casella di input
+                    inputRectTransform.sizeDelta = new Vector2(inputRectTransform.sizeDelta.x, newHeight);
                 }
 
                 // Se nessun comando viene riconosciuto, mostra un messaggio
@@ -152,6 +172,11 @@ public class TextChat : MonoBehaviourPunCallbacks
 
                 // Imposta la grandezza del font
                 myText.fontSize = fontSize;
+                // Calcola la nuova altezza in base alla dimensione del font e al fattore di scala
+                float newHeight = myText.fontSize * scaleFactor;
+
+                // Applica la nuova altezza alla casella di input
+                inputRectTransform.sizeDelta = new Vector2(inputRectTransform.sizeDelta.x, newHeight);
             }
             else
             {

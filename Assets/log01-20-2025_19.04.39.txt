@@ -1,0 +1,4 @@
+19:04:44: gg created room gg
+19:04:45: gg joined the room
+19:05:44: gg wrote in the chat: "aumenta la grandezza font a dieci"
+19:06:16: gg wrote in the chat: "ma ingrandisci font a ben"

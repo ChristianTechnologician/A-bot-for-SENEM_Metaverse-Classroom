@@ -215,6 +215,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {   
             background = GameObject.Find("BotCommand").GetComponent<Image>();
             text = GameObject.Find("BotCommand").GetComponentInChildren<TMP_Text>();
+            if(isBotMenuOpen){
+                background.enabled = false;
+                text.enabled = false;
+                isBotMenuOpen = false;
+            }else{
+                background.enabled = true;
+                text.enabled = true;
+                isBotMenuOpen = true;
+            }
+            /*
             if(!isNextBot){
                 background.enabled = !background.enabled;
                 text.enabled = !text.enabled;
@@ -225,7 +235,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 text.enabled = !text.enabled;
                 //bot.GetComponent<BotInteractionPrompt>().OpenMenu();  
             }
-            isBotMenuOpen = true;
+            isBotMenuOpen = true;*/
         }
 
         if (textChat.isSelected || isTyping)

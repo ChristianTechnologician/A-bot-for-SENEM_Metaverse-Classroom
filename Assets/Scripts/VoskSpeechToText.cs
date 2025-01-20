@@ -83,7 +83,7 @@ public class VoskSpeechToText : MonoBehaviour
     private VoskResultText _voskResultText;
 
     // Tasto per attivare/disattivare
-    public KeyCode activationKey = KeyCode.Space;
+    //public KeyCode activationKey = KeyCode.Space;
     private string _lastResult = string.Empty;
     public Scriba scriba;
     int type;
@@ -106,10 +106,10 @@ public class VoskSpeechToText : MonoBehaviour
     void Update()
     {
         // Rileva la pressione del tasto di attivazione
-        if (Input.GetKeyDown(activationKey))
-        {
-            ToggleRecognizer();
-        }
+        //if (Input.GetKeyDown(activationKey))
+        //{
+            //ToggleRecognizer();
+        //}
 
         // Processa i risultati dalla coda
         if (_threadedResultQueue.TryDequeue(out string voiceResult))
