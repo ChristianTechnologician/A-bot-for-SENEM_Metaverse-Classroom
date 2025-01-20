@@ -1,0 +1,4 @@
+22:45:15: gg created room gg
+22:45:15: gg joined the room
+22:45:20: gg wrote in the chat at 22:45:20: "ciao come va"
+22:45:24: gg wrote in the chat at 22:45:24: "tutto bene"

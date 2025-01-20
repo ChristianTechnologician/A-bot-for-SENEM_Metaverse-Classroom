@@ -1,0 +1,5 @@
+22:21:10: gg created room gg
+22:21:11: gg joined the room
+22:21:20: gg wrote in the chat at 22:21:20: "ciao come va"
+22:21:34: gg wrote in the chat: "dhd"
+22:21:43: gg wrote in the chat at 22:21:43: "band"

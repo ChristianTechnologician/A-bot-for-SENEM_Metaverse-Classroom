@@ -1,0 +1,3 @@
+23:43:32: p created room p
+23:43:32: p joined the room
+23:46:52: p wrote in the chat: "gg"
