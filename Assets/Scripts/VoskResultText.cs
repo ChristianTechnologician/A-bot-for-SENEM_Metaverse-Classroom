@@ -68,12 +68,12 @@ public class VoskResultText : MonoBehaviour
         string intent = fastTextIntentRecognizer.PredictIntent(testoCorretto);
         Debug.Log("intent: " + intent);
         Debug.Log("Siamo al bivio");
-        if(intent.Contains("__label__coloreBot")){
+        /*if(intent.Contains("__label__coloreBot")){
             colorChanger.ColorFinder(testoCorretto);
             Debug.Log("VoskResultText: Migliore trascrizione inviata a ColorChanger: " + testoCorretto);
             bestTranscription.text = "";
             testoCorretto = "";
-        }
+        }*/
         if(intent.Contains("__label__coloreLavagna")){
             colorChangerWhiteBoard.ColorFinder(testoCorretto);
             Debug.Log("VoskResultText: Migliore trascrizione inviata a ColorChangerWhiteBoard: " + testoCorretto);
@@ -89,8 +89,18 @@ public class VoskResultText : MonoBehaviour
         if(intent.Equals("__label__trascrizione")){
             //lastTranscription = bestTranscription.text;
             //transcriptionSync.OnTranscriptionResult(testoCorretto); // Invio a TranscriptionSync
-            textChat.SendTranscriptionRpc(testoCorretto);
-            Debug.Log("VoskResultText: Migliore trascrizione inviata a TranscriptionSync: " + testoCorretto);
+            // Definisci il pattern regex con tolleranza per piccole variazioni
+            string pattern2 = @"
+            (trascrivi(m[iy])?\squest(o|a)) |  # trascrivimi questo o simili
+            (fa[mr]{1,2}i?\sla\s?trascrizione(\sdi)?\s(quello|questo|testo|che\ssto\sper\sdire)?) |  # fammi la trascrizione, fai la trascrizione di questo, etc.
+            (puoi\s(fare\s)?la\s?trascrizione(\sdi)?\squest(o|a)?) |  # puoi fare la trascrizione di questo
+            (puoi\strascrivere\squest(o|a)?)  # puoi trascrivere questo
+            ";
+
+            // Usa RegexOptions.Multiline e RegexOptions.IgnorePatternWhitespace per tollerare variazioni e spazi
+            string testoPulito = Regex.Replace(testoCorretto, pattern2, "", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+            textChat.SendTranscriptionRpc(testoPulito);
+            Debug.Log("VoskResultText: Migliore trascrizione inviata a TranscriptionSync: " + testoPulito);
             bestTranscription.text = "";
             testoCorretto = "";
         }

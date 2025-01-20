@@ -11,8 +11,13 @@ public class AudioRecorder : MonoBehaviour
     public AudioClip audioClip;
     private string microphone;
     private bool isRecording = false;
-     private Image background;
+    private Image background;
     private TMP_Text text;
+
+    private Image recordingIndicator; // L'elemento UI (Testo o Immagine) che indica la registrazione
+    public float blinkInterval = 0.5f;    // Intervallo per far lampeggiare l'indicatore
+    private bool isBlinking = false;      // Stato del lampeggiamento
+    private TMP_Text recState;
 
     [SerializeField] private SavWavVosk savWavVosk;
     public List<string> Devices { get; private set; }
@@ -45,6 +50,8 @@ void Awake()
 
         if (Input.GetKeyDown(KeyCode.T))
         {
+            recordingIndicator = GameObject.Find("MicBot").GetComponent<Image>();
+            recState = GameObject.Find("MicBot").GetComponentInChildren<TMP_Text>();
             background = GameObject.Find("BotCommand").GetComponent<Image>();
             text = GameObject.Find("BotCommand").GetComponentInChildren<TMP_Text>();
             if(background.enabled == true && text.enabled == true){
@@ -107,6 +114,12 @@ void Awake()
         }
 
         if (savWavVosk == null) { Debug.LogError("savWavVosk is not assigned!"); }
+
+        /*if (recordingIndicator != null)
+        {
+            recordingIndicator.SetActive(false);
+            recState.enabled = false;
+        }*/
     }
 
     /*void Update()
@@ -129,6 +142,14 @@ void Awake()
     {
         if (microphone != null)
         {
+            recordingIndicator.enabled = true; 
+            recState.enabled = true;
+            /*if (recordingIndicator != null)
+            {
+                recordingIndicator.SetActive(true); 
+                recState.enabled = true;
+                StartCoroutine(BlinkRecordingIndicator());
+            }*/
             audioClip = Microphone.Start(CurrentDeviceName, true, 20, 16000);
             if (audioClip == null) { Debug.LogError("Microphone.Start returned null AudioClip."); }else{
             Debug.Log($"audioClip created: {audioClip != null}");}
@@ -142,11 +163,32 @@ void Awake()
         if (microphone != null)
         {
             Microphone.End(CurrentDeviceName);
+            recordingIndicator.enabled = false;
+            recState.enabled = false;
+            /*if (recordingIndicator != null)
+            {
+                recordingIndicator.SetActive(false);
+                recState.enabled = false;
+                StopCoroutine(BlinkRecordingIndicator());
+            }*/
             isRecording = false;
             Debug.Log("Recording stopped");
             SaveAudio();
         }
     }
+
+    /* Coroutine per far lampeggiare l'indicatore di registrazione
+    private IEnumerator BlinkRecordingIndicator()
+    {
+        isBlinking = true;
+        while (isRecording)
+        {
+            // Cambia la visibilità dell'indicatore
+            recordingIndicator.SetActive(!recordingIndicator.activeSelf);
+            yield return new WaitForSeconds(blinkInterval); // Attendi per l'intervallo impostato
+        }
+        isBlinking = false;
+    }*/
 
     public void SaveAudio()
     {
