@@ -7,6 +7,7 @@ public class ColorChangerWhiteBoard : MonoBehaviour
 {
     public Renderer objectRenderer;  // Il renderer dell'oggetto a cui cambiare colore
     private Color currentColor;      // Memorizza il colore attuale dell'oggetto
+    private BotInfoHandler botInfoHandler;
 
     // Funzione chiamata quando ricevi la trascrizione del testo
     public void ColorFinder(string transcription)
@@ -23,7 +24,9 @@ public class ColorChangerWhiteBoard : MonoBehaviour
 
         if (matches.Count == 0)
         {
+            botInfoHandler = FindObjectOfType<BotInfoHandler>();
             Debug.Log("Nessun colore riconosciuto nella frase.");
+            botInfoHandler.sendErrorMessagge(1);
             return;
         }
 

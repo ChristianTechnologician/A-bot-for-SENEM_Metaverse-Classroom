@@ -1,0 +1,3 @@
+13:21:14: gg created room gg
+13:21:15: gg joined the room
+13:23:17: gg wrote in the chat: "modifica la grandezza dei font a dodici"

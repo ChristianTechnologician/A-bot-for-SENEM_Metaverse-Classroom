@@ -21,6 +21,9 @@ public class TextChat : MonoBehaviourPunCallbacks
     //Campo InputField da modificare
     private GameObject myInputField;
 
+    //Per i messaggi di errore del bot
+    private BotInfoHandler botInfoHandler;
+
     // Fattore di scala per adattare l'altezza della casella di input
     public float scaleFactor = 1.2f; 
 
@@ -120,7 +123,7 @@ public class TextChat : MonoBehaviourPunCallbacks
         //myInputField = GameObject.Find("CommandInfo");
         // Ottieni il RectTransform della casella di input
         RectTransform inputRectTransform = inputField.GetComponent<RectTransform>();
-
+        
         // Controlla se c'è una frase come "a venti" per impostare direttamente il font
         Match matchDirectSet = Regex.Match(text, @"\ba\s*(\b\w+\b)");
         if(!matchDirectSet.Success){
@@ -131,7 +134,6 @@ public class TextChat : MonoBehaviourPunCallbacks
                 {
                     changeValue = fontSize;
                 }
-
                 // Se il comando è per ingrandire, aumenta la dimensione del font
                 if (shouldIncrease)
                 {
@@ -153,12 +155,10 @@ public class TextChat : MonoBehaviourPunCallbacks
                     // Applica la nuova altezza alla casella di input
                     inputRectTransform.sizeDelta = new Vector2(inputRectTransform.sizeDelta.x, newHeight);
                 }
-
-                // Se nessun comando viene riconosciuto, mostra un messaggio
-                if (!shouldIncrease && !shouldDecrease)
-                {
-                    Debug.Log("Nessun comando valido trovato.");
-                }
+            }else{
+                Debug.Log("Nessun comando valido trovato.");
+                botInfoHandler = FindObjectOfType<BotInfoHandler>();
+                botInfoHandler.sendErrorMessagge(2);
             }
         }else{
             // Estrai il numero dal testo inserito
@@ -181,6 +181,8 @@ public class TextChat : MonoBehaviourPunCallbacks
             else
             {
                 Debug.Log("Nessun numero valido trovato nel testo o aumento generico/di tot.");
+                botInfoHandler = FindObjectOfType<BotInfoHandler>();
+                botInfoHandler.sendErrorMessagge(2);
             }
         }
     }

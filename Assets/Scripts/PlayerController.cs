@@ -476,12 +476,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     private void InteractionInfoUpdate()
     {
-        //info bot
-        if(bot != null)
-            interactionInfo.text = "Press E to open the bot menu";
-        else
-            interactionInfo.text = "";
-
         //info sedia
         if (chair != null && !isSitting && !chair.GetComponent<ChairController>().IsBusy())
             interactionInfo.text = "Press C to sit";
@@ -503,7 +497,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         else if (whiteBoard != null && whiteBoard.isBeingEdited && Presenter.Instance.writerID != PhotonNetwork.LocalPlayer.UserId)
             interactionInfo.text = "Whiteboard is busy";
-
+        //info bot
+        else if(bot != null)
+            interactionInfo.text = "Press E to open the bot menu";
         else 
             interactionInfo.text = "";
     }

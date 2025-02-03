@@ -11,6 +11,7 @@ public class VoskResultText : MonoBehaviour
     public ColorChanger colorChanger;
     public ColorChangerWhiteBoard colorChangerWhiteBoard;
     public TextChat textChat;
+    private BotInfoHandler botInfoHandler;
     private string lastTranscription = "";
 
     void Awake()
@@ -90,6 +91,13 @@ public class VoskResultText : MonoBehaviour
             //lastTranscription = bestTranscription.text;
             //transcriptionSync.OnTranscriptionResult(testoCorretto); // Invio a TranscriptionSync
             // Definisci il pattern regex con tolleranza per piccole variazioni
+
+            if(testoCorretto.Equals("")||testoCorretto.Equals(" ")){
+                botInfoHandler = FindObjectOfType<BotInfoHandler>();
+                botInfoHandler.sendErrorMessagge(0);
+                return;
+            }
+
             string pattern2 = @"
             (trascrivi(m[iy])?\squest(o|a)) |  # trascrivimi questo o simili
             (fa[mr]{1,2}i?\sla\s?trascrizione(\sdi)?\s(quello|questo|testo|che\ssto\sper\sdire)?) |  # fammi la trascrizione, fai la trascrizione di questo, etc.
@@ -101,6 +109,12 @@ public class VoskResultText : MonoBehaviour
             string testoPulito = Regex.Replace(testoCorretto, pattern2, "", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
             textChat.SendTranscriptionRpc(testoPulito);
             Debug.Log("VoskResultText: Migliore trascrizione inviata a TranscriptionSync: " + testoPulito);
+            bestTranscription.text = "";
+            testoCorretto = "";
+        }
+        if(intent.Equals("__label__vuoto")){
+            botInfoHandler = FindObjectOfType<BotInfoHandler>();
+            botInfoHandler.sendErrorMessagge(0);
             bestTranscription.text = "";
             testoCorretto = "";
         }
